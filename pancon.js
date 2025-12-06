@@ -187,3 +187,38 @@ const PANORAMAS_CONFIG = [
     },
     // Добавьте больше панорам по необходимости
 ];
+
+
+panos = [
+            "panoramas/Ангар 3.JPG",
+            "panoramas/Био.JPG",
+            "panoramas/Благодатный.jpg",
+            "panoramas/Восточный буровая установка.jpg",
+            "panoramas/Восточный поближе.jpg",
+            "panoramas/Восточный сверху.jpg",
+            "panoramas/Восточный смотровая.jpg",
+            "panoramas/Дорога с самосвалами.jpg",
+            "panoramas/Забой общий план.jpg",
+            "panoramas/Забой.jpg",
+            "panoramas/ЗИФ.JPG",
+            "panoramas/Кабина.JPG",
+            "panoramas/Карьер помещение.JPG",
+            "panoramas/КСК вечер.jpg",
+            "panoramas/КСК день.jpg",
+            "panoramas/Мойка 2.JPG",
+            "panoramas/Мойка.JPG",
+            "panoramas/Памятник.jpg",
+            "panoramas/Питстоп 1.JPG",
+            "panoramas/Питстоп 2.JPG",
+            "panoramas/Питстоп 3.JPG",
+            "panoramas/Плавильное отделение.JPG",
+            "panoramas/Поселок вечер.jpg",
+            "panoramas/Поселок день.jpg",
+            "panoramas/Самосвал.jpg",
+            "panoramas/Спортзал.JPG",
+            "panoramas/Столовая 1.JPG",
+            "panoramas/Столовая 2.JPG",
+            "panoramas/Центр управления 1.JPG",
+            "panoramas/Центр управления 2.JPG",
+            "panoramas/Центр управления 3.JPG",
+        ];
