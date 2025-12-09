@@ -1,81 +1,117 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Панорамный Тур</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Панорамный Тур</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-    <div id="container">
-        <!-- Экран загрузки -->
-        <div id="loading-screen">
-            <div class="spinner"></div>
-            <p>Загрузка панорам...</p>
-            <div id="loading-progress">
-                <div id="loading-bar"></div>
-                <span id="loading-text">0%</span>
-            </div>
-        </div>
-        
-        <!-- Панель навигации -->
-        <div id="navigation-panel" class="panel">
-            <div class="panel-header">
-                <h2><i class="fas fa-images"></i> Панорамы</h2>
-                <button id="close-nav" class="icon-btn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div id="panorama-list">
-                <!-- Автоматически сгенерируется -->
-            </div>
-        </div>
-        
-        <!-- Панель управления -->
-        <div id="control-panel" class="panel">
-            <div class="controls-top">
-                <button id="prev-btn" class="control-btn" title="Предыдущая (←)">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
-                <div class="panorama-info">
-                    <div id="current-name">Загрузка...</div>
-                    <div class="counter">
-                        <span id="current-index">1</span> / <span id="total-count">0</span>
-                    </div>
-                </div>
-                
-                <button id="next-btn" class="control-btn" title="Следующая (→)">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            
-            <div class="controls-bottom">
-                <button id="toggle-nav-btn" class="control-btn" title="Список панорам (N)">
-                    <i class="fas fa-list"></i>
-                </button>
-                <button id="auto-rotate-btn" class="control-btn" title="Автоповорот (Пробел)">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
-                <button id="reset-btn" class="control-btn" title="Сбросить вид (R)">
-                    <i class="fas fa-home"></i>
-                </button>
-                <button id="fullscreen-btn" class="control-btn" title="Полный экран (F)">
-                    <i class="fas fa-expand"></i>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Холст Three.js -->
-        <canvas id="panorama-canvas"></canvas>
+  <div id="container">
+    <!-- Экран загрузки -->
+    <div id="loading-screen">
+      <div class="spinner"></div>
+      <p>Загрузка панорам...</p>
+      <div id="loading-progress">
+        <div id="loading-bar"></div>
+        <span id="loading-text">0%</span>
+      </div>
     </div>
 
-    <!-- Библиотеки -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
-    
-    <script src="script.js"></script>
+    <!-- Панель навигации -->
+    <div id="navigation-panel" class="panel">
+      <div class="panel-header">
+        <h2><i class="fas fa-images"></i> Панорамы</h2>
+        <button id="close-nav" class="icon-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="panorama-list">
+        <!-- Автоматически сгенерируется -->
+      </div>
+    </div>
+
+    <!-- Панель управления -->
+    <div id="control-panel" class="panel">
+      <div class="controls-top">
+        <button id="prev-btn" class="control-btn" title="Предыдущая (←)">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="panorama-info">
+          <div id="current-name">Загрузка...</div>
+          <div class="counter">
+            <span id="current-index">1</span> / <span id="total-count">0</span>
+          </div>
+        </div>
+
+        <button id="next-btn" class="control-btn" title="Следующая (→)">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <div class="controls-bottom">
+        <button id="toggle-nav-btn" class="control-btn" title="Список панорам (N)">
+          <i class="fas fa-list"></i>
+        </button>
+        <button id="auto-rotate-btn" class="control-btn" title="Автоповорот (Пробел)">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+        <button id="reset-btn" class="control-btn" title="Сбросить вид (R)">
+          <i class="fas fa-home"></i>
+        </button>
+        <button id="fullscreen-btn" class="control-btn" title="Полный экран (F)">
+          <i class="fas fa-expand"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Холст Three.js -->
+    <canvas id="panorama-canvas"></canvas>
+
+    <!-- Добавьте после холста Three.js -->
+    <div id="hotspots-container"></div>
+
+    <!-- Модальное окно для информации -->
+    <div id="info-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-title">Заголовок</h3>
+          <button id="close-modal" class="icon-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="modal-description">Описание...</p>
+          <img id="modal-image" src="" alt=""
+            style="max-width: 100%; border-radius: 8px; margin-top: 15px; display: none;">
+        </div>
+        <div class="modal-footer">
+          <button id="goto-panorama-btn" class="btn primary-btn" style="display: none;">
+            <i class="fas fa-external-link-alt"></i> Перейти к панораме
+          </button>
+          <button id="close-modal-btn" class="btn secondary-btn">
+            Закрыть
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button id="edit-hotspots-btn" class="control-btn" title="Режим редактирования (E)"
+    style="position: absolute; top: 20px; right: 20px;">
+    <i class="fas fa-edit"></i>
+  </button>
+
+  <!-- Библиотеки -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+
+  <script src="script.js"></script>
 </body>
+
 </html>
