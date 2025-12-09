@@ -21,7 +21,7 @@ const PANORAMAS_CONFIG = [
         linkedPanoramaId: 1,
       },
       {
-        id: 1765286417612,
+        id: 2,
         title: "Дорога с самосвалами",
         description: "",
         position: {
@@ -34,14 +34,23 @@ const PANORAMAS_CONFIG = [
         linkedPanoramaId: 4,
       },
       {
-        id: 1765286687312,
-        title: "Самосвал",
+        id: 3,
+        title: "Забой",
         description: "",
         position: {
           x: 0.8564285672829597,
           y: -0.32039386598416886,
           z: 0.4048183293545082
         },
+        type: "link",
+        icon: "external-link-alt",
+        linkedPanoramaId: 2,
+      },
+      {
+        id: 6,
+        title: "Самосвал",
+        description: "",
+        position: { x: 0.942830967662407, y: -0.32618730988240724, z: -0.06834914255824676 },
         type: "link",
         icon: "external-link-alt",
         linkedPanoramaId: 3,
@@ -63,6 +72,27 @@ const PANORAMAS_CONFIG = [
         icon: "map-marker-alt",
         linkedPanoramaId: null // для типа "link" указываем ID панорамы
       },
+      {
+        id: 4,
+        title: "Информация",
+        description: "Информация",
+        position: {
+          x: -0.8034006714398102,
+          y: -0.49698359194737274,
+          z: 0.3279552872956148
+        },
+        type: "info",
+        icon: "map-marker-alt"
+      },
+      {
+        id: 5,
+        title: "Самосвал",
+        description: "",
+        position: { x: -0.9408302903275931, y: -0.10376161311546518, z: 0.3226017551808631 },
+        type: "link",
+        icon: "external-link-alt",
+        linkedPanoramaId: 3,
+      }
     ]
   },
   {
@@ -75,7 +105,26 @@ const PANORAMAS_CONFIG = [
     id: 3,
     name: "Самосвал",
     description: "Самосвал",
-    file: "panoramas/Самосвал.jpg"
+    file: "panoramas/Самосвал.jpg",
+    hotspots: [
+      {
+        id: 7,
+        title: "Буровая установка",
+        description: "",
+        position: { x: 0.8851651281198506, y: 0.06049826659577226, z: 0.46132705936187546 },
+        type: "link",
+        icon: "external-link-alt",
+        linkedPanoramaId: 1,
+      },
+      {
+        id: 8,
+        title: "Информация",
+        description: "Информация",
+        position: { x: -0.9344125378723833, y: 0.2961121948774848, z: -0.19796660605195543 },
+        type: "info",
+        icon: "map-marker-alt"
+      },
+    ]
   },
   {
     id: 4,
