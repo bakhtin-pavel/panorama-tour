@@ -356,11 +356,22 @@ function createPanoramaList() {
 // =============================================
 // ПРЕДЗАГРУЗКА ПАНОРАМ
 // =============================================
+// =============================================
+// ПРЕДЗАГРУЗКА ПАНОРАМ С ПОВТОРНЫМИ ПОПЫТКАМИ
+// =============================================
 function preloadPanoramas() {
   const textureLoader = new THREE.TextureLoader();
   let loadedCount = 0;
+  const maxRetries = 3; // Максимум 3 попытки
+  const retryDelays = [1000, 3000, 5000]; // Задержки между попытками (мс)
 
   PANORAMAS_CONFIG.forEach((panorama, index) => {
+    loadPanoramaWithRetry(index, 0);
+  });
+
+  function loadPanoramaWithRetry(index, retryCount) {
+    const panorama = PANORAMAS_CONFIG[index];
+
     textureLoader.load(
       panorama.file,
       (texture) => {
@@ -370,9 +381,10 @@ function preloadPanoramas() {
         loadedCount++;
 
         updateLoadingProgress(loadedCount);
+        console.log(`✓ Загружено: ${panorama.name}`);
 
         // Если это первая панорама, загружаем её
-        if (index === 0) {
+        if (index === 0 && currentSphere === null) {
           loadPanorama(0);
         }
       },
@@ -383,22 +395,35 @@ function preloadPanoramas() {
       },
       (error) => {
         // Ошибка загрузки
-        console.error(`Ошибка загрузки: ${panorama.file}`, error);
-        loadedCount++;
+        console.warn(`Ошибка загрузки (попытка ${retryCount + 1}/${maxRetries}): ${panorama.file}`);
 
-        // Создаем placeholder
-        const placeholder = createPlaceholderTexture(panorama.name);
-        loadedTextures[index] = placeholder;
+        if (retryCount < maxRetries) {
+          // Пробуем снова через некоторое время
+          const delay = retryDelays[retryCount] || 5000;
+          console.log(`Повторная попытка через ${delay}мс...`);
 
-        updateLoadingProgress(loadedCount);
+          setTimeout(() => {
+            loadPanoramaWithRetry(index, retryCount + 1);
+          }, delay);
+        } else {
+          // Все попытки исчерпаны
+          console.error(`Не удалось загрузить после ${maxRetries} попыток: ${panorama.file}`);
 
-        // Если это первая панорама, загружаем placeholder
-        if (index === 0) {
-          loadPanorama(0);
+          // Создаем placeholder
+          const placeholder = createPlaceholderTexture(panorama.name);
+          loadedTextures[index] = placeholder;
+          loadedCount++;
+
+          updateLoadingProgress(loadedCount);
+
+          // Если это первая панорама и ещё ничего не загружено
+          if (index === 0 && currentSphere === null) {
+            loadPanorama(0);
+          }
         }
       }
     );
-  });
+  }
 }
 
 // =============================================
