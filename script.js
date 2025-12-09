@@ -7,7 +7,46 @@ const PANORAMAS_CONFIG = [
     id: 22,
     name: "Восточный поближе",
     description: "Восточный поближе",
-    file: "panoramas/Восточный поближе.jpg"
+    file: "panoramas/Восточный поближе.jpg",
+    // initialView: { position: { x: 0, y: 0, z: 0.1 }, target: { x: 0.8467139183283778, y: -0.26855429655277063, z: -0.45929743120558786 } },
+    // initialView: { position: { x: 0, y: 0, z: 0.1 }, target: { x: 0, y: 0, z: 0 } },
+    hotspots: [
+      {
+        id: 1,
+        title: "Буровая установка",
+        description: "",
+        position: { x: 0.5498822610569868, y: -0.53392399590343, z: -0.642304184614556 },
+        type: "link",
+        icon: "external-link-alt",
+        linkedPanoramaId: 1,
+      },
+      {
+        id: 1765286417612,
+        title: "Дорога с самосвалами",
+        description: "",
+        position: {
+          x: 0.5100997768869964,
+          y: 0.05333241481494316,
+          z: -0.8584601744692898
+        },
+        type: "link",
+        icon: "external-link-alt",
+        linkedPanoramaId: 4,
+      },
+      {
+        id: 1765286687312,
+        title: "Самосвал",
+        description: "",
+        position: {
+          x: 0.8564285672829597,
+          y: -0.32039386598416886,
+          z: 0.4048183293545082
+        },
+        type: "link",
+        icon: "external-link-alt",
+        linkedPanoramaId: 3,
+      }
+    ],
   },
   {
     id: 1,
@@ -16,7 +55,7 @@ const PANORAMAS_CONFIG = [
     file: "panoramas/Восточный буровая установка.jpg",
     hotspots: [
       {
-        id: 1,
+        id: 100,
         title: "Восточный буровая установка",
         description: "самый глубокий карьер, отрабатываемый открытым способом в России. Глубина 880 метров. На такой глубине уместились бы три здания МГУ, его высота со шпилем — 235 метров. Туда целиком вошло бы даже самое большое здание в России: высота питерского «Лахта Центра» — 462 метра.",
         position: { x: 0.5658356983675781, y: -0.38840080036095487, z: -0.7273065246042035 },
@@ -250,12 +289,8 @@ function createPanoramaList() {
       item.classList.add('active');
     }
 
-    // Извлекаем имя файла без пути
-    const fileName = panorama.file.split('/').pop();
-
     item.innerHTML = `
             <h3><i class="fas fa-image"></i> ${panorama.name}</h3>
-            <div class="file-name">${fileName}</div>
         `;
 
     item.addEventListener('click', () => {
@@ -409,8 +444,23 @@ function loadPanorama(index) {
   scene.add(currentSphere);
 
   // Сбрасываем камеру в начальное положение
-  camera.position.set(0, 0, 0.1);
-  controls.target.set(0, 0, 0);
+  if (panorama.initialView) {
+    // Если задан initialView, используем его
+    camera.position.set(
+      panorama.initialView.position.x || 0,
+      panorama.initialView.position.y || 0,
+      panorama.initialView.position.z || 0.1
+    );
+    controls.target.set(
+      panorama.initialView.target.x || 0,
+      panorama.initialView.target.y || 0,
+      panorama.initialView.target.z || 0
+    );
+  } else {
+    // Стандартное положение (старый код)
+    camera.position.set(0, 0, 0.1);
+    controls.target.set(0, 0, 0);
+  }
   controls.update();
 
   // Обновляем интерфейс
@@ -674,7 +724,8 @@ function showInfoModal(hotspotConfig) {
       }
     };
     gotoBtn.innerHTML = `<i class="fas fa-external-link-alt"></i> Перейти к "${targetPanorama.name}"`;
-  } else {
+  }
+  else {
     gotoBtn.style.display = 'none';
   }
 
